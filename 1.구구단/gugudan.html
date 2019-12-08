@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>1-2. 구구단</title>
+</head>
+<body>
+    <div id="root">
+        <div>{{first}} 곱하기 {{second}}는?</div>
+        <form v-on:submit="onSubmitForm">
+            <input type="number" ref='answer' v-model='input'>
+            <button>입력</button>
+        </form>
+        <div id="result">{{result}}</div>
+    </div>
+    <script>
+        const app = new Vue({
+            el:'#root',
+            data:{
+                first:Math.ceil(Math.random()*9),
+                second:Math.ceil(Math.random()*9),
+                input:'',
+                result:'',
+            },
+            methods:{
+                onSubmitForm(e){
+                    e.preventDefault();
+                    console.log(this);
+                    if (this.first * this.second == parseInt(this.input)){
+                        this.result = '정답';
+                        this.first = Math.ceil(Math.random()*9),
+                        this.second = Math.ceil(Math.random()*9),
+                        this.input = '';
+                        this.$refs.answer.focus();
+                    }else{
+                        this.result = '땡';
+                        this.input = ''
+                        this.$refs.answer.focus();
+
+                        /*
+                            input 객체를 ref를 이용해 answer로 명명하여 사용
+                            남용하면 좋지않음, 데이터 변경할때 사용하지 않는것이 좋음
+                        */
+                    }
+                },
+            },
+        });
+    </script>
+</body>
+</html>
+
+<!-- Vue는 먼저 바뀌는 부분을 찾아서 체크함 -->
+<!-- 보간법과 v-model, ref -->

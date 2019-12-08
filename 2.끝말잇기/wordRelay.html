@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>2. 끝말잇기</title>
+</head>
+<body>
+    <div id="root">
+        <word-relay start-word='제로초'></word-relay>
+        <word-relay start-word='초밥'></word-relay>
+        <word-relay start-word='바보'></word-relay>
+        <!-- kebab-case를 사용하면 Vue props에서는 자동으로 camelCase형식으로 변경됨-->
+    </div>
+</body>
+<script>
+    /*
+        PascalCase
+        camelCase
+        kebab-case
+    */
+    Vue.component('word-relay', {
+        template: `
+            <div>
+                <div>{{word}}</div>
+                <form v-on:submit='onSubmitForm'>
+                    <input type="text" ref='input' v-model='value'>
+                    <button type="submit">입력!</button>
+                </form>
+                <div>{{result}}</div>
+            </div>
+        `,
+        props: ['startWord'],
+        data(){
+            return{
+                word:this.startWord,
+                result:'',
+                value:'',
+            }
+        },
+        methods:{
+            onSubmitForm(e){
+                e.preventDefault();
+                if(this.word[this.word.length -1] === this.value[0]){
+                    this.result = '맞춤';
+                    this.word = this.value;
+                    this.value = '';
+                    this.$ref.input.focus();
+                }else{
+                    this.result = '틀림';
+                    this.$ref.input.focus();
+                }
+                    
+            }
+        },
+    })
+</script>
+<script>
+    // Vue 인스턴스
+    const app = new Vue({
+        el:'#root',
+    });
+</script>
+</html>
+<!-- 반복되는 부분은 컴포넌트를 사용 -->
+<!-- props를 이용 -->
